@@ -1,7 +1,3 @@
-// Global map references
-let reportMap = null;
-let welfareMap = null;
-
 // Color coding for report types
 const typeColors = {
     abuse: '#e41a1c',
@@ -11,145 +7,28 @@ const typeColors = {
     other: '#ff7f00'
 };
 
+// Global map reference
+let welfareMap = null;
+let reportLayers = {};
+
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Clean up any existing maps first
-    if (reportMap) reportMap.remove();
-    if (welfareMap) welfareMap.remove();
-    
-    reportMap = null;
-    welfareMap = null;
-    
     // Initialize the appropriate map
-    if (document.getElementById('locationMap')) {
-        initReportMap();
-    }
-    
     if (document.getElementById('welfareMap')) {
         initWelfareMap();
     }
+    
+    // Check if we need to highlight a specific report
+    const urlParams = new URLSearchParams(window.location.search);
+    const reportId = urlParams.get('report');
+    if (reportId) {
+        setTimeout(() => highlightReport(reportId), 1000);
+    }
+    
+    // Setup auth state
+    checkAuthState();
 });
 
-// Initialize report map on reports page
-function initReportMap() {
-    const mapElement = document.getElementById('locationMap');
-    if (!mapElement || reportMap) return;
-    
-    reportMap = L.map('locationMap').setView([37.8, -96], 4);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(reportMap);
-    
-    let marker = null;
-    
-    // Handle map clicks
-    reportMap.on('click', function(e) {
-        if (marker) reportMap.removeLayer(marker);
-        
-        marker = L.marker(e.latlng).addTo(reportMap);
-        document.getElementById('location').value = `${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`;
-    });
-    
-    // Handle form submission
-    setupReportForm();
-}
-
-function setupReportForm() {
-    const form = document.getElementById('reportForm');
-    if (!form) return;
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const reportType = document.getElementById('reportType').value;
-        const animalType = document.getElementById('animalType').value;
-        const location = document.getElementById('location').value;
-        const description = document.getElementById('description').value;
-        const isAnonymous = document.getElementById('anonymous').checked;
-        
-        if (!reportType || !animalType || !location || !description) {
-            alert('Please fill in all required fields');
-            return;
-        }
-        
-        // Create and save report
-        saveReport({
-            type: reportType,
-            animal: animalType,
-            location: location,
-            description: description,
-            isAnonymous: isAnonymous
-        });
-        
-        // Show success modal
-        const modal = new bootstrap.Modal(document.getElementById('reportSuccessModal'));
-        modal.show();
-        
-        // Reset form
-        this.reset();
-        if (window.reportMap && window.reportMap.marker) {
-            window.reportMap.removeLayer(window.reportMap.marker);
-            window.reportMap.marker = null;
-        }
-    });
-    
-    // Handle photo upload preview
-    document.getElementById('photoUpload')?.addEventListener('change', function(e) {
-        const previewContainer = document.getElementById('photoPreview');
-        previewContainer.innerHTML = '';
-        
-        Array.from(e.target.files).forEach(file => {
-            if (!file.type.startsWith('image/')) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.createElement('div');
-                preview.className = 'position-relative';
-                preview.innerHTML = `
-                    <img src="${e.target.result}" class="photo-preview">
-                    <button class="photo-preview-remove">&times;</button>
-                `;
-                previewContainer.appendChild(preview);
-                
-                preview.querySelector('.photo-preview-remove').addEventListener('click', function() {
-                    preview.remove();
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-}
-
-function saveReport(reportData) {
-    const user = JSON.parse(localStorage.getItem('wildguard_user')) || { name: 'Anonymous', email: '' };
-    
-    const report = {
-        id: Date.now(),
-        type: reportData.type,
-        animal: reportData.animal,
-        location: reportData.location,
-        description: reportData.description,
-        date: new Date().toISOString(),
-        status: 'Submitted',
-        reporter: reportData.isAnonymous ? 'Anonymous' : user.name,
-        photos: [] // In a real app, you would upload these to a server
-    };
-    
-    // Save report to user's profile if logged in
-    if (user.email) {
-        user.reports = user.reports || [];
-        user.reports.push(report);
-        localStorage.setItem('wildguard_user', JSON.stringify(user));
-    } else {
-        // For demo purposes, store in localStorage even if not logged in
-        const reports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
-        reports.push(report);
-        localStorage.setItem('wildguard_reports', JSON.stringify(reports));
-    }
-}
-
-// Initialize welfare map on map page
 function initWelfareMap() {
     const mapElement = document.getElementById('welfareMap');
     if (!mapElement || welfareMap) return;
@@ -160,10 +39,27 @@ function initWelfareMap() {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(welfareMap);
     
+    // Create layer groups for each report type
+    reportLayers = {
+        abuse: L.layerGroup().addTo(welfareMap),
+        neglect: L.layerGroup().addTo(welfareMap),
+        poaching: L.layerGroup().addTo(welfareMap),
+        habitat: L.layerGroup().addTo(welfareMap),
+        other: L.layerGroup().addTo(welfareMap)
+    };
+    
+    // Add layer control
+    const layerControl = L.control.layers(null, null, { collapsed: false }).addTo(welfareMap);
+    layerControl.addOverlay(reportLayers.abuse, 'Animal Abuse');
+    layerControl.addOverlay(reportLayers.neglect, 'Neglect');
+    layerControl.addOverlay(reportLayers.poaching, 'Poaching');
+    layerControl.addOverlay(reportLayers.habitat, 'Habitat Destruction');
+    layerControl.addOverlay(reportLayers.other, 'Other Issues');
+    
     // Load reports initially
     loadReportsOnMap();
     
-    // Setup filters
+    // Setup filters if they exist
     document.getElementById('applyFilters')?.addEventListener('click', function() {
         const filters = {
             animal: document.getElementById('animalFilter').value,
@@ -177,17 +73,13 @@ function initWelfareMap() {
 function loadReportsOnMap(filters = {}) {
     if (!welfareMap) return;
     
-    // Clear existing markers
-    welfareMap.eachLayer(layer => {
-        if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
-            welfareMap.removeLayer(layer);
-        }
-    });
+    // Clear existing markers from all layers
+    Object.values(reportLayers).forEach(layer => layer.clearLayers());
     
     // Get and filter reports
     const filteredReports = filterReports(getAllReports(), filters);
     
-    // Add markers to map
+    // Add markers to appropriate layers
     filteredReports.forEach(report => {
         if (!report.location) return;
         
@@ -201,9 +93,16 @@ function loadReportsOnMap(filters = {}) {
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8
-        }).addTo(welfareMap);
+        });
         
         marker.bindPopup(createPopupContent(report));
+        
+        // Store report ID on marker for highlighting
+        marker.reportId = report.id;
+        
+        // Add to appropriate layer
+        const layer = reportLayers[report.type] || reportLayers.other;
+        marker.addTo(layer);
     });
 }
 
@@ -248,22 +147,81 @@ function filterReports(reports, filters) {
 
 function createPopupContent(report) {
     return `
-        <div class="map-popup">
-            <h6>${capitalizeFirstLetter(report.type)} - ${capitalizeFirstLetter(report.animal)}</h6>
-            <p>${report.description}</p>
-            <small>Reported on ${formatDate(report.date)}</small>
+        <div class="map-popup" style="max-width: 300px;">
+            <h6 style="margin: 0 0 8px 0; color: ${getReportColor(report.type)}">
+                ${capitalizeFirstLetter(report.type)} - ${capitalizeFirstLetter(report.animal)}
+            </h6>
+            <p style="margin: 0 0 8px 0; font-size: 14px;">${report.description}</p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <small style="color: #666;">Reported by: ${report.reporter}</small>
+                <small style="color: #666;">${formatDate(report.date)}</small>
+            </div>
             ${report.photos?.length > 0 ? 
-                `<img src="${report.photos[0]}" style="max-width:100%;margin-top:8px;">` : ''}
+                `<img src="${report.photos[0]}" style="max-width:100%; border-radius: 4px; margin-top: 8px;">` : ''}
+            <div style="margin-top: 8px;">
+                <a href="report-details.html?id=${report.id}" class="btn btn-sm btn-success" style="width: 100%;">
+                    View Details
+                </a>
+            </div>
         </div>
     `;
 }
 
-// Helper functions
+function highlightReport(reportId) {
+    if (!welfareMap) return;
+    
+    // Find the marker with this report ID
+    let foundMarker = null;
+    
+    Object.values(reportLayers).forEach(layer => {
+        layer.eachLayer(marker => {
+            if (marker.reportId == reportId) {
+                foundMarker = marker;
+            }
+        });
+    });
+    
+    if (foundMarker) {
+        // Zoom to the marker and open its popup
+        welfareMap.setView(foundMarker.getLatLng(), 15);
+        foundMarker.openPopup();
+        
+        // Pulse animation
+        let pulseCount = 0;
+        const pulseInterval = setInterval(() => {
+            foundMarker.setStyle({
+                fillColor: pulseCount % 2 === 0 ? '#ffff00' : getReportColor(foundMarker.report.type)
+            });
+            pulseCount++;
+            if (pulseCount > 5) {
+                clearInterval(pulseInterval);
+                foundMarker.setStyle({
+                    fillColor: getReportColor(foundMarker.report.type)
+                });
+            }
+        }, 300);
+    }
+}
+
 function getAllReports() {
+    // Check central reports collection first
+    const allReports = JSON.parse(localStorage.getItem('wildguard_all_reports')) || [];
+    
+    // Also check individual user reports
     const users = JSON.parse(localStorage.getItem('wildguard_users')) || [];
     const userReports = users.flatMap(user => user.reports || []);
+    
+    // And anonymous reports
     const anonymousReports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
-    return [...userReports, ...anonymousReports];
+    
+    // Combine all sources, removing duplicates by ID
+    const combined = [...allReports, ...userReports, ...anonymousReports];
+    const uniqueIds = new Set();
+    return combined.filter(report => {
+        if (uniqueIds.has(report.id)) return false;
+        uniqueIds.add(report.id);
+        return true;
+    });
 }
 
 function getReportColor(type) {
@@ -277,3 +235,26 @@ function capitalizeFirstLetter(string) {
 function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString();
 }
+
+function checkAuthState() {
+    const user = JSON.parse(localStorage.getItem('wildguard_user'));
+    if (user) {
+        document.getElementById('loginBtn')?.classList.add('d-none');
+        document.getElementById('logoutBtn')?.classList.remove('d-none');
+        document.getElementById('profileBtn')?.classList.remove('d-none');
+    } else {
+        document.getElementById('loginBtn')?.classList.remove('d-none');
+        document.getElementById('logoutBtn')?.classList.add('d-none');
+        document.getElementById('profileBtn')?.classList.add('d-none');
+    }
+}
+
+// Setup login/logout buttons
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+    new bootstrap.Modal(document.getElementById('loginModal')).show();
+});
+
+document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem('wildguard_user');
+    window.location.reload();
+});
