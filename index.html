@@ -148,47 +148,46 @@
         </div>
     </section>
 
-  <!-- Footer -->
-<footer class="bg-dark text-white py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
-                <p>Empowering people to protect animals through technology and community action.</p>
-            </div>
-            <div class="col-md-2 mb-3">
-                <h5>Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="index.html" class="text-decoration-none text-white">Home</a></li>
-                    <li><a href="reports.html" class="text-decoration-none text-white">Report</a></li>
-                    <li><a href="map.html" class="text-decoration-none text-white">Map</a></li>
-                    <li><a href="resources.html" class="text-decoration-none text-white">Resources</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h5>Contact</h5>
-                <ul class="list-unstyled">
-                    <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
-                    <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h5>Follow Us<br>
-                </h5>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/" class="text-decoration-none text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://x.com" class="text-decoration-none text-white me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="https://instagram.com" class="text-decoration-none text-white me-3"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/feed/" class="text-decoration-none text-white"><i class="fab fa-linkedin-in"></i></a>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
+                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
             </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center text-muted">
+                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            </div>
         </div>
-        <hr class="my-4 bg-secondary">
-        <div class="text-center">
-            <small>© 2023 WildGuard. All rights reserved.</small>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">
@@ -259,5 +258,71 @@
     <!-- Custom JS -->
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const profileBtn = document.getElementById("profileBtn");
+    const addReportBtn = document.getElementById("addReportBtn");
+    const reportIssueBtn = document.querySelector(".hero-section .btn-success");
+    const reportsNav = document.querySelector(".nav-link[href='reports.html']");
+    const createProfileBtn = document.querySelector(".btn-light[href='profile.html']");
+
+    // Function to check authentication state (Replace with actual auth logic)
+    function isAuthenticated() {
+        return localStorage.getItem("userLoggedIn") === "true"; // Simulating login state
+    }
+
+    function updateUI() {
+        if (isAuthenticated()) {
+            loginBtn.classList.add("d-none");
+            logoutBtn.classList.remove("d-none");
+            profileBtn.classList.remove("d-none");
+
+            // Hide "Create Your Profile" once logged in
+            if (createProfileBtn) createProfileBtn.style.display = "none";
+
+            // Ensure report-related buttons redirect to reports.html
+            if (addReportBtn) addReportBtn.setAttribute("href", "reports.html");
+            if (reportIssueBtn) reportIssueBtn.setAttribute("href", "reports.html");
+            if (reportsNav) reportsNav.setAttribute("href", "reports.html");
+        } else {
+            loginBtn.classList.remove("d-none");
+            logoutBtn.classList.add("d-none");
+            profileBtn.classList.add("d-none");
+
+            if (createProfileBtn) {
+                createProfileBtn.style.display = "block";
+                createProfileBtn.setAttribute("href", "index.html"); // Redirect to index.html
+            }
+
+            // Show login modal for report actions if not logged in
+            if (addReportBtn) addReportBtn.addEventListener("click", showLoginModal);
+            if (reportIssueBtn) reportIssueBtn.addEventListener("click", showLoginModal);
+            if (reportsNav) reportsNav.addEventListener("click", showLoginModal);
+        }
+    }
+
+    function showLoginModal(event) {
+        event.preventDefault();
+        const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+        loginModal.show();
+    }
+
+    // Simulate Login
+    loginBtn.addEventListener("click", function () {
+        localStorage.setItem("userLoggedIn", "true");
+        updateUI();
+    });
+
+    logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("userLoggedIn");
+        updateUI();
+    });
+
+    updateUI();
+});
+
+    </script>
 </body>
 </html>
