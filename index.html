@@ -54,7 +54,8 @@
                     <p class="lead mb-4">Report animal welfare concerns, track cases in your area, and connect with organizations working to protect animals worldwide.</p>
                     <div class="d-flex gap-3">
                         <a href="reports.html" class="btn btn-success btn-lg">Report an Issue</a>
-                        <a href="map.html" class="btn btn-outline-success btn-lg">View Map</a>
+                        <a href="map.html" class="btn btn-outline-success btn-lg protected-link">View Map</a>
+
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -69,9 +70,11 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Recent Animal Welfare Reports</h2>
-                <button class="btn btn-success btn-lg" id="addReportBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <a href="reports.html" class="btn btn-success btn-lg protected-link">
                     <i class="fas fa-plus me-2"></i>Add Report
-                </button>
+                </a>
+                
+                
             </div>
             
             <div class="row g-4" id="reportsContainer">
@@ -131,7 +134,8 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Recent Reports</h2>
-                <a href="map.html" class="btn btn-outline-success">View All</a>
+                <a href="map.html" class="btn btn-outline-success protected-link">View All</a>
+
             </div>
             <div class="row g-4" id="recentReports">
                 <!-- Reports will be loaded here via JavaScript -->
@@ -258,5 +262,71 @@
     <!-- Custom JS -->
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
+    <script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const navbarLoginBtn = document.getElementById("navbarLoginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const profileBtn = document.getElementById("profileBtn");
+    const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+    const createProfileBtn = document.querySelector("[data-bs-target='#loginModal']");
+    
+    const reportBtn = document.querySelector(".btn[href='reports.html']"); // "Report an Issue" button
+    
+    // Function to check if user is logged in
+    function isLoggedIn() {
+        return localStorage.getItem("userLoggedIn") === "true";
+    }
+    
+    function updateNavbar() {
+        if (isLoggedIn()) {
+            navbarLoginBtn.classList.add("d-none");
+            logoutBtn.classList.remove("d-none");
+            profileBtn.classList.remove("d-none");
+            if (createProfileBtn) {
+                createProfileBtn.setAttribute("href", "profile.html");
+                createProfileBtn.removeAttribute("data-bs-toggle");
+                createProfileBtn.removeAttribute("data-bs-target");
+            }
+            if (reportBtn) {
+                reportBtn.setAttribute("href", "reports.html");
+            }
+        } else {
+            navbarLoginBtn.classList.remove("d-none");
+            logoutBtn.classList.add("d-none");
+            profileBtn.classList.add("d-none");
+            if (createProfileBtn) {
+                createProfileBtn.setAttribute("data-bs-toggle", "modal");
+                createProfileBtn.setAttribute("data-bs-target", "#loginModal");
+                createProfileBtn.removeAttribute("href");
+            }
+            if (reportBtn) {
+                reportBtn.setAttribute("href", "#"); // Prevent redirection
+                reportBtn.addEventListener("click", function (event) {
+                    event.preventDefault(); // Do nothing when clicked
+                });
+            }
+        }
+    }
+
+    // Handle login
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        localStorage.setItem("userLoggedIn", "true");
+        updateNavbar();
+        loginModal.hide();
+    });
+
+    // Handle logout
+    logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("userLoggedIn");
+        updateNavbar();
+    });
+
+    updateNavbar();
+});
+
+
+    </script>
 </body>
 </html>
