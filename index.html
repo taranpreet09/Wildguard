@@ -38,7 +38,7 @@
                 </ul>
                 <div class="d-flex">
                     <a href="profile.html" class="btn btn-outline-light me-2" id="profileBtn">Profile</a>
-                    <button class="btn btn-light" id="loginBtn">Login</button>
+                    <button class="btn btn-light" id="navbarLoginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                     <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
                 </div>
             </div>
@@ -64,25 +64,25 @@
         </div>
     </header>
     
-    <!-- Add this section below the hero section -->
-<section class="reports-feed py-5">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Recent Animal Welfare Reports</h2>
-        <button class="btn btn-success btn-lg" id="addReportBtn">
-          <i class="fas fa-plus me-2"></i>Add Report
-        </button>
-      </div>
-      
-      <div class="row g-4" id="reportsContainer">
-        <!-- Reports will be loaded here -->
-      </div>
-      
-      <div class="text-center mt-4">
-        <button class="btn btn-outline-success" id="loadMoreBtn">Load More</button>
-      </div>
-    </div>
-  </section>
+    <!-- Reports Feed Section -->
+    <section class="reports-feed py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Recent Animal Welfare Reports</h2>
+                <button class="btn btn-success btn-lg" id="addReportBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-plus me-2"></i>Add Report
+                </button>
+            </div>
+            
+            <div class="row g-4" id="reportsContainer">
+                <!-- Reports will be loaded here -->
+            </div>
+            
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-success" id="loadMoreBtn">Load More</button>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <section class="py-5 bg-light">
@@ -144,7 +144,7 @@
         <div class="container text-center">
             <h2 class="mb-4">Ready to make a difference?</h2>
             <p class="lead mb-4">Join our community of animal welfare advocates today.</p>
-            <a href="profile.html" class="btn btn-light btn-lg">Create Your Profile</a>
+            <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">Create Your Profile</button>
         </div>
     </section>
 
