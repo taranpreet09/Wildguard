@@ -263,45 +263,47 @@
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
-                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <h5>Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
-                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
-                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
-                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h5>Contact</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
-                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h5>Follow Us</h5>
-                    <div class="social-links">
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
+     <!-- Footer -->
+<footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                <p>Empowering people to protect animals through technology and community action.</p>
             </div>
-            <hr class="my-4 bg-secondary">
-            <div class="text-center text-muted">
-                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            <div class="col-md-2 mb-3">
+                <h5>Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="index.html" class="text-decoration-none text-white">Home</a></li>
+                    <li><a href="reports.html" class="text-decoration-none text-white">Report</a></li>
+                    <li><a href="map.html" class="text-decoration-none text-white">Map</a></li>
+                    <li><a href="resources.html" class="text-decoration-none text-white">Resources</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                    <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h5>Follow Us<br>
+                </h5>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/" class="text-decoration-none text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com" class="text-decoration-none text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com" class="text-decoration-none text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/feed/" class="text-decoration-none text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
         </div>
-    </footer>
+        <hr class="my-4 bg-secondary">
+        <div class="text-center">
+            <small>© 2023 WildGuard. All rights reserved.</small>
+        </div>
+    </div>
+</footer>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
@@ -314,266 +316,264 @@
 
 
 
-<script>
-// Reports Page Controller
-const ReportsController = {
-map: null,
-marker: null,
-
-init: function() {
-    this.initMap();
-    this.setupCurrentLocation();
-    this.setupPhotoUpload();
-    this.setupFormSubmission();
-    this.loadLocalReports();
-},
-
-initMap: function() {
-    this.map = L.map('locationMap').setView([20, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.map);
-    
-    this.map.on('click', (e) => {
-        this.setLocation(e.latlng.lat, e.latlng.lng);
-    });
-},
-
-setupCurrentLocation: function() {
+    <script>
+        // Reports Page Controller
+        const ReportsController = {
+            map: null,
+            marker: null,
+        
+            init: function() {
+                console.log('Initializing ReportsController');
+                this.initMap();
+                this.setupCurrentLocation();
+                this.setupPhotoUpload();
+                this.setupFormSubmission();
+                this.loadLocalReports();
+            },
+        
+            initMap: function() {
+                const mapContainer = document.getElementById('locationMap');
+                if (!mapContainer) {
+                    console.error('Map container #locationMap not found');
+                    return;
+                }
+        
+                // Check if map is already initialized
+                if (this.map) {
+                    console.log('Map already initialized, reusing existing instance');
+                    return;
+                }
+        
+                try {
+                    console.log('Initializing new map instance');
+                    this.map = L.map('locationMap').setView([20, 0], 2);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(this.map);
+                    
+                    this.map.on('click', (e) => {
+                        this.setLocation(e.latlng.lat, e.latlng.lng);
+                    });
+                    console.log('Map initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing map:', error);
+                }
+            },
+        
+            setupCurrentLocation: function() {
     const btn = document.getElementById('useCurrentLocation');
     if (!btn) return;
-    
+
     btn.addEventListener('click', () => {
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by your browser');
-            return;
-        }
-        
         btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Locating...';
         btn.disabled = true;
-        
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setLocation(
-                    position.coords.latitude, 
-                    position.coords.longitude,
-                    true
-                );
-                btn.innerHTML = '<i class="fas fa-check me-1"></i> Location Set';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fas fa-location-arrow me-1"></i> Current Location';
-                    btn.disabled = false;
-                }, 2000);
-            },
-            (error) => {
-                alert(`Error getting location: ${error.message}`);
+        setTimeout(() => {
+            this.setLocation(37.7749, -122.4194, true); // Hardcoded San Francisco
+            btn.innerHTML = '<i class="fas fa-check me-1"></i> Location Set';
+            setTimeout(() => {
                 btn.innerHTML = '<i class="fas fa-location-arrow me-1"></i> Current Location';
                 btn.disabled = false;
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
+            }, 2000);
+        }, 1000); // Simulate 1-second delay
     });
 },
-
-setLocation: function(lat, lng, shouldZoom = false) {
-    document.getElementById('location').value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-    
-    if (this.marker) {
-        this.map.removeLayer(this.marker);
-    }
-    this.marker = L.marker([lat, lng]).addTo(this.map);
-    
-    if (shouldZoom) {
-        this.map.setView([lat, lng], 15);
-    }
-},
-
-setupPhotoUpload: function() {
-    const uploadInput = document.getElementById('photoUpload');
-    if (!uploadInput) return;
-    
-    uploadInput.addEventListener('change', (e) => {
-        const previewContainer = document.getElementById('photoPreview');
-        previewContainer.innerHTML = '';
         
-        Array.from(e.target.files).forEach(file => {
-            if (!file.type.startsWith('image/')) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.createElement('div');
-                preview.className = 'position-relative';
-                preview.innerHTML = `
-                    <img src="${e.target.result}" class="photo-preview">
-                    <button class="photo-preview-remove">&times;</button>
-                `;
-                previewContainer.appendChild(preview);
+            setLocation: function(lat, lng, shouldZoom = false) {
+                document.getElementById('location').value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
                 
-                preview.querySelector('.photo-preview-remove').addEventListener('click', () => {
-                    preview.remove();
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-},
-
-setupFormSubmission: function() {
-    const form = document.getElementById('reportForm');
-    if (!form) return;
-    
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+                if (this.marker) {
+                    this.map.removeLayer(this.marker);
+                }
+                this.marker = L.marker([lat, lng]).addTo(this.map);
+                
+                if (shouldZoom) {
+                    this.map.setView([lat, lng], 15);
+                }
+            },
         
-        const formData = {
-            type: document.getElementById('reportType').value,
-            animal: document.getElementById('animalType').value,
-            location: document.getElementById('location').value,
-            description: document.getElementById('description').value,
-            anonymous: document.getElementById('anonymous').checked
+            setupPhotoUpload: function() {
+                const uploadInput = document.getElementById('photoUpload');
+                if (!uploadInput) return;
+                
+                uploadInput.addEventListener('change', (e) => {
+                    const previewContainer = document.getElementById('photoPreview');
+                    previewContainer.innerHTML = '';
+                    
+                    Array.from(e.target.files).forEach(file => {
+                        if (!file.type.startsWith('image/')) return;
+                        
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const preview = document.createElement('div');
+                            preview.className = 'position-relative';
+                            preview.innerHTML = `
+                                <img src="${e.target.result}" class="photo-preview">
+                                <button class="photo-preview-remove">×</button>
+                            `;
+                            previewContainer.appendChild(preview);
+                            
+                            preview.querySelector('.photo-preview-remove').addEventListener('click', () => {
+                                preview.remove();
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            },
+        
+            setupFormSubmission: function() {
+                const form = document.getElementById('reportForm');
+                if (!form) return;
+                
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const formData = {
+                        type: document.getElementById('reportType').value,
+                        animal: document.getElementById('animalType').value,
+                        location: document.getElementById('location').value,
+                        description: document.getElementById('description').value,
+                        anonymous: document.getElementById('anonymous').checked
+                    };
+                    
+                    if (!this.validateForm(formData)) return;
+                    
+                    this.saveReport(formData);
+                    this.showSuccessModal();
+                    this.resetForm();
+                    this.loadLocalReports();
+                });
+            },
+        
+            validateForm: function(formData) {
+                if (!formData.type || !formData.animal || !formData.location || !formData.description) {
+                    alert('Please fill all required fields');
+                    return false;
+                }
+                return true;
+            },
+        
+            saveReport: function(formData) {
+                const report = {
+                    id: Date.now(),
+                    ...formData,
+                    date: new Date().toISOString(),
+                    status: 'Submitted',
+                    reporter: formData.anonymous ? 'Anonymous' : (this.getCurrentUser()?.name || 'Anonymous'),
+                    photos: this.getPhotoPreviews()
+                };
+                
+                if (this.getCurrentUser()) {
+                    const user = this.getCurrentUser();
+                    user.reports = user.reports || [];
+                    user.reports.push(report);
+                    localStorage.setItem('wildguard_user', JSON.stringify(user));
+                } else {
+                    const reports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
+                    reports.push(report);
+                    localStorage.setItem('wildguard_reports', JSON.stringify(reports));
+                }
+            },
+        
+            getPhotoPreviews: function() {
+                return Array.from(document.querySelectorAll('.photo-preview')).map(img => img.src);
+            },
+        
+            getCurrentUser: function() {
+                return JSON.parse(localStorage.getItem('wildguard_user'));
+            },
+        
+            showSuccessModal: function() {
+                const modal = new bootstrap.Modal(document.getElementById('reportSuccessModal'));
+                modal.show();
+            },
+        
+            resetForm: function() {
+                document.getElementById('reportForm').reset();
+                if (this.marker) {
+                    this.map.removeLayer(this.marker);
+                    this.marker = null;
+                }
+                document.getElementById('photoPreview').innerHTML = '';
+            },
+        
+            loadLocalReports: function() {
+                const container = document.getElementById('localReports');
+                if (!container) return;
+                
+                const reports = this.getAllReports()
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 3);
+                
+                container.innerHTML = reports.length ? 
+                    reports.map(report => this.createReportCard(report)).join('') :
+                    this.createNoReportsMessage();
+            },
+        
+            getAllReports: function() {
+                const users = JSON.parse(localStorage.getItem('wildguard_users')) || [];
+                const userReports = users.flatMap(user => user.reports || []);
+                const anonymousReports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
+                return [...userReports, ...anonymousReports];
+            },
+        
+            createReportCard: function(report) {
+                return `
+                    <div class="col-md-6 col-lg-12">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="badge bg-${this.getTypeColor(report.type)}">
+                                        ${this.capitalize(report.type)}
+                                    </span>
+                                    <small class="text-muted">${new Date(report.date).toLocaleDateString()}</small>
+                                </div>
+                                <h6 class="card-title">${this.capitalize(report.animal)}</h6>
+                                <p class="card-text text-muted small">${report.description.substring(0, 80)}${report.description.length > 80 ? '...' : ''}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>
+                                        ${report.reporter}
+                                    </small>
+                                    <a href="map.html?report=${report.id}" class="btn btn-sm btn-outline-success">
+                                        View on Map
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+        
+            createNoReportsMessage: function() {
+                return `
+                    <div class="col-12 text-center py-4">
+                        <i class="fas fa-paw fa-3x text-muted mb-3"></i>
+                        <h5>No reports yet in your area</h5>
+                        <p class="text-muted">Be the first to submit a report</p>
+                    </div>
+                `;
+            },
+        
+            getTypeColor: function(type) {
+                const colors = {
+                    abuse: 'danger', neglect: 'warning',
+                    poaching: 'success', habitat: 'info',
+                    other: 'secondary'
+                };
+                return colors[type] || 'primary';
+            },
+        
+            capitalize: function(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
         };
         
-        if (!this.validateForm(formData)) return;
-        
-        this.saveReport(formData);
-        this.showSuccessModal();
-        this.resetForm();
-        this.loadLocalReports();
-    });
-},
-
-validateForm: function(formData) {
-    if (!formData.type || !formData.animal || !formData.location || !formData.description) {
-        alert('Please fill all required fields');
-        return false;
-    }
-    return true;
-},
-
-saveReport: function(formData) {
-    const report = {
-        id: Date.now(),
-        ...formData,
-        date: new Date().toISOString(),
-        status: 'Submitted',
-        reporter: formData.anonymous ? 'Anonymous' : (this.getCurrentUser()?.name || 'Anonymous'),
-        photos: this.getPhotoPreviews()
-    };
-    
-    if (this.getCurrentUser()) {
-        const user = this.getCurrentUser();
-        user.reports = user.reports || [];
-        user.reports.push(report);
-        localStorage.setItem('wildguard_user', JSON.stringify(user));
-    } else {
-        const reports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
-        reports.push(report);
-        localStorage.setItem('wildguard_reports', JSON.stringify(reports));
-    }
-},
-
-getPhotoPreviews: function() {
-    return Array.from(document.querySelectorAll('.photo-preview')).map(img => img.src);
-},
-
-getCurrentUser: function() {
-    return JSON.parse(localStorage.getItem('wildguard_user'));
-},
-
-showSuccessModal: function() {
-    const modal = new bootstrap.Modal(document.getElementById('reportSuccessModal'));
-    modal.show();
-},
-
-resetForm: function() {
-    document.getElementById('reportForm').reset();
-    if (this.marker) {
-        this.map.removeLayer(this.marker);
-        this.marker = null;
-    }
-    document.getElementById('photoPreview').innerHTML = '';
-},
-
-loadLocalReports: function() {
-    const container = document.getElementById('localReports');
-    if (!container) return;
-    
-    const reports = this.getAllReports()
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 3);
-    
-    container.innerHTML = reports.length ? 
-        reports.map(report => this.createReportCard(report)).join('') :
-        this.createNoReportsMessage();
-},
-
-getAllReports: function() {
-    const users = JSON.parse(localStorage.getItem('wildguard_users')) || [];
-    const userReports = users.flatMap(user => user.reports || []);
-    const anonymousReports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
-    return [...userReports, ...anonymousReports];
-},
-
-createReportCard: function(report) {
-    return `
-        <div class="col-md-6 col-lg-12">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="badge bg-${this.getTypeColor(report.type)}">
-                            ${this.capitalize(report.type)}
-                        </span>
-                        <small class="text-muted">${new Date(report.date).toLocaleDateString()}</small>
-                    </div>
-                    <h6 class="card-title">${this.capitalize(report.animal)}</h6>
-                    <p class="card-text text-muted small">${report.description.substring(0, 80)}${report.description.length > 80 ? '...' : ''}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <i class="fas fa-user me-1"></i>
-                            ${report.reporter}
-                        </small>
-                        <a href="map.html?report=${report.id}" class="btn btn-sm btn-outline-success">
-                            View on Map
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-},
-
-createNoReportsMessage: function() {
-    return `
-        <div class="col-12 text-center py-4">
-            <i class="fas fa-paw fa-3x text-muted mb-3"></i>
-            <h5>No reports yet in your area</h5>
-            <p class="text-muted">Be the first to submit a report</p>
-        </div>
-    `;
-},
-
-getTypeColor: function(type) {
-    const colors = {
-        abuse: 'danger', neglect: 'warning',
-        poaching: 'success', habitat: 'info',
-        other: 'secondary'
-    };
-    return colors[type] || 'primary';
-},
-
-capitalize: function(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-};
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-ReportsController.init();
-});
-</script>
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded, initializing ReportsController');
+            ReportsController.init();
+        });
+        </script>
 </body>
 </html>
