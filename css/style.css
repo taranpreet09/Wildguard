@@ -506,7 +506,7 @@
   }
   
   .footer-links a {
-    color: rgba(255,255,255,0.7);
+    color: white;
     transition: all 0.3s ease;
   }
   
@@ -521,7 +521,7 @@
   }
   
   .social-links a {
-    color: rgba(255,255,255,0.7);
+    color: white;
     font-size: 1.25rem;
     transition: all 0.3s ease;
   }
@@ -536,7 +536,7 @@
     padding-top: 1.5rem;
     margin-top: 2rem;
     text-align: center;
-    color: rgba(255,255,255,0.5);
+    color: white;
     font-size: 0.875rem;
   }
   
