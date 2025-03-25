@@ -38,7 +38,7 @@
                 </ul>
                 <div class="d-flex">
                     <a href="profile.html" class="btn btn-outline-light me-2" id="profileBtn">Profile</a>
-                    <button class="btn btn-light" id="navbarLoginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-light" id="loginBtn">Login</button>
                     <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
                 </div>
             </div>
@@ -54,8 +54,7 @@
                     <p class="lead mb-4">Report animal welfare concerns, track cases in your area, and connect with organizations working to protect animals worldwide.</p>
                     <div class="d-flex gap-3">
                         <a href="reports.html" class="btn btn-success btn-lg">Report an Issue</a>
-                        <a href="map.html" class="btn btn-outline-success btn-lg protected-link">View Map</a>
-
+                        <a href="map.html" class="btn btn-outline-success btn-lg">View Map</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -65,27 +64,25 @@
         </div>
     </header>
     
-    <!-- Reports Feed Section -->
-    <section class="reports-feed py-5">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Recent Animal Welfare Reports</h2>
-                <a href="reports.html" class="btn btn-success btn-lg protected-link">
-                    <i class="fas fa-plus me-2"></i>Add Report
-                </a>
-                
-                
-            </div>
-            
-            <div class="row g-4" id="reportsContainer">
-                <!-- Reports will be loaded here -->
-            </div>
-            
-            <div class="text-center mt-4">
-                <button class="btn btn-outline-success" id="loadMoreBtn">Load More</button>
-            </div>
-        </div>
-    </section>
+    <!-- Add this section below the hero section -->
+<section class="reports-feed py-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Recent Animal Welfare Reports</h2>
+        <button class="btn btn-success btn-lg" id="addReportBtn">
+          <i class="fas fa-plus me-2"></i>Add Report
+        </button>
+      </div>
+      
+      <div class="row g-4" id="reportsContainer">
+        <!-- Reports will be loaded here -->
+      </div>
+      
+      <div class="text-center mt-4">
+        <button class="btn btn-outline-success" id="loadMoreBtn">Load More</button>
+      </div>
+    </div>
+  </section>
 
     <!-- Features Section -->
     <section class="py-5 bg-light">
@@ -134,8 +131,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Recent Reports</h2>
-                <a href="map.html" class="btn btn-outline-success protected-link">View All</a>
-
+                <a href="map.html" class="btn btn-outline-success">View All</a>
             </div>
             <div class="row g-4" id="recentReports">
                 <!-- Reports will be loaded here via JavaScript -->
@@ -148,50 +144,51 @@
         <div class="container text-center">
             <h2 class="mb-4">Ready to make a difference?</h2>
             <p class="lead mb-4">Join our community of animal welfare advocates today.</p>
-            <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">Create Your Profile</button>
+            <a href="profile.html" class="btn btn-light btn-lg">Create Your Profile</a>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
-                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <h5>Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
-                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
-                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
-                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h5>Contact</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
-                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h5>Follow Us</h5>
-                    <div class="social-links">
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
+  <!-- Footer -->
+<footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                <p>Empowering people to protect animals through technology and community action.</p>
             </div>
-            <hr class="my-4 bg-secondary">
-            <div class="text-center text-muted">
-                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            <div class="col-md-2 mb-3">
+                <h5>Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="index.html" class="text-decoration-none text-white">Home</a></li>
+                    <li><a href="reports.html" class="text-decoration-none text-white">Report</a></li>
+                    <li><a href="map.html" class="text-decoration-none text-white">Map</a></li>
+                    <li><a href="resources.html" class="text-decoration-none text-white">Resources</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                    <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h5>Follow Us<br>
+                </h5>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/" class="text-decoration-none text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com" class="text-decoration-none text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com" class="text-decoration-none text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/feed/" class="text-decoration-none text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
         </div>
-    </footer>
+        <hr class="my-4 bg-secondary">
+        <div class="text-center">
+            <small>© 2023 WildGuard. All rights reserved.</small>
+        </div>
+    </div>
+</footer>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">
@@ -262,71 +259,5 @@
     <!-- Custom JS -->
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
-    <script>
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const navbarLoginBtn = document.getElementById("navbarLoginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const profileBtn = document.getElementById("profileBtn");
-    const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
-    const createProfileBtn = document.querySelector("[data-bs-target='#loginModal']");
-    
-    const reportBtn = document.querySelector(".btn[href='reports.html']"); // "Report an Issue" button
-    
-    // Function to check if user is logged in
-    function isLoggedIn() {
-        return localStorage.getItem("userLoggedIn") === "true";
-    }
-    
-    function updateNavbar() {
-        if (isLoggedIn()) {
-            navbarLoginBtn.classList.add("d-none");
-            logoutBtn.classList.remove("d-none");
-            profileBtn.classList.remove("d-none");
-            if (createProfileBtn) {
-                createProfileBtn.setAttribute("href", "profile.html");
-                createProfileBtn.removeAttribute("data-bs-toggle");
-                createProfileBtn.removeAttribute("data-bs-target");
-            }
-            if (reportBtn) {
-                reportBtn.setAttribute("href", "reports.html");
-            }
-        } else {
-            navbarLoginBtn.classList.remove("d-none");
-            logoutBtn.classList.add("d-none");
-            profileBtn.classList.add("d-none");
-            if (createProfileBtn) {
-                createProfileBtn.setAttribute("data-bs-toggle", "modal");
-                createProfileBtn.setAttribute("data-bs-target", "#loginModal");
-                createProfileBtn.removeAttribute("href");
-            }
-            if (reportBtn) {
-                reportBtn.setAttribute("href", "#"); // Prevent redirection
-                reportBtn.addEventListener("click", function (event) {
-                    event.preventDefault(); // Do nothing when clicked
-                });
-            }
-        }
-    }
-
-    // Handle login
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-        localStorage.setItem("userLoggedIn", "true");
-        updateNavbar();
-        loginModal.hide();
-    });
-
-    // Handle logout
-    logoutBtn.addEventListener("click", function () {
-        localStorage.removeItem("userLoggedIn");
-        updateNavbar();
-    });
-
-    updateNavbar();
-});
-
-
-    </script>
 </body>
 </html>
