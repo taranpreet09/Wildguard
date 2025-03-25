@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | WildGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-paw me-2"></i>WildGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="map.html">Welfare Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="community.html">Community</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="profile.html" class="btn btn-outline-light me-2" id="profileBtn">Profile</a>
+                    <button class="btn btn-light" id="loginBtn">Login</button>
+                    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>Community Feed</h1>
+                    <button class="btn btn-success" id="newPostBtn" data-bs-toggle="modal" data-bs-target="#newPostModal">
+                        <i class="fas fa-plus me-2"></i>New Post
+                    </button>
+                </div>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="images/user1.png" alt="User" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h5 class="mb-0">Sarah Johnson</h5>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                        </div>
+                        <p>Just rescued this beautiful stray dog from a construction site. She's safe now at our local shelter. If anyone is looking to adopt a sweet 2-year-old mixed breed, please contact me!</p>
+                        <img src="images/rescued-dog.png" alt="Rescued dog" class="img-fluid rounded mb-3">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button class="btn btn-sm btn-outline-success me-2">
+                                    <i class="far fa-thumbs-up me-1"></i>Like (24)
+                                </button>
+                                <button class="btn btn-sm btn-outline-success">
+                                    <i class="far fa-comment me-1"></i>Comment (5)
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share-alt me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="images/user2.png" alt="User" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h5 class="mb-0">Wildlife Rescue Team</h5>
+                                <small class="text-muted">1 day ago</small>
+                            </div>
+                        </div>
+                        <p>We're organizing a beach cleanup this Saturday to protect marine wildlife. Join us at 9 AM at Sunset Beach. Gloves and bags will be provided. Let's make a difference together!</p>
+                        <div class="alert alert-info">
+                            <strong>Event Details:</strong> Saturday, June 10, 9 AM - 12 PM at Sunset Beach
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button class="btn btn-sm btn-outline-success me-2">
+                                    <i class="far fa-thumbs-up me-1"></i>Like (56)
+                                </button>
+                                <button class="btn btn-sm btn-outline-success">
+                                    <i class="far fa-comment me-1"></i>Comment (12)
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share-alt me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="images/user3.png" alt="User" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h5 class="mb-0">Michael Chen</h5>
+                                <small class="text-muted">2 days ago</small>
+                            </div>
+                        </div>
+                        <p>Important petition to sign! The city is considering reducing protected habitat areas for endangered species. Please take a moment to sign and share this petition to protect our local wildlife.</p>
+                        <div class="alert alert-warning">
+                            <a href="#" class="text-decoration-none">Sign the petition: Stop Habitat Reduction in Green Valley</a>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button class="btn btn-sm btn-outline-success me-2">
+                                    <i class="far fa-thumbs-up me-1"></i>Like (89)
+                                </button>
+                                <button class="btn btn-sm btn-outline-success">
+                                    <i class="far fa-comment me-1"></i>Comment (23)
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share-alt me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="images/user4.png" alt="User" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h5 class="mb-0">Animal Rights Advocates</h5>
+                                <small class="text-muted">3 days ago</small>
+                            </div>
+                        </div>
+                        <p>Our latest campaign video is out! Learn how factory farming affects animal welfare and what you can do to help. Share this video to spread awareness!</p>
+                        <div class="ratio ratio-16x9 mb-3">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button class="btn btn-sm btn-outline-success me-2">
+                                    <i class="far fa-thumbs-up me-1"></i>Like (142)
+                                </button>
+                                <button class="btn btn-sm btn-outline-success">
+                                    <i class="far fa-comment me-1"></i>Comment (37)
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share-alt me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Post Modal -->
+    <div class="modal fade" id="newPostModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="postForm">
+                        <div class="mb-3">
+                            <label for="postType" class="form-label">Post Type</label>
+                            <select class="form-select" id="postType">
+                                <option value="update">Update</option>
+                                <option value="event">Event</option>
+                                <option value="petition">Petition</option>
+                                <option value="question">Question</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label">What would you like to share?</label>
+                            <textarea class="form-control" id="postContent" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postImage" class="form-label">Add Image (Optional)</label>
+                            <input class="form-control" type="file" id="postImage" accept="image/*">
+                        </div>
+                        <div class="mb-3 d-none" id="eventFields">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="eventDate" class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="eventDate">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="eventTime" class="form-label">Time</label>
+                                    <input type="time" class="form-control" id="eventTime">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="eventLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="eventLocation">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 d-none" id="petitionFields">
+                            <label for="petitionLink" class="form-label">Petition Link</label>
+                            <input type="url" class="form-control" id="petitionLink" placeholder="https://">
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
+                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center text-muted">
+                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Show/hide additional fields based on post type
+        document.getElementById('postType').addEventListener('change', function() {
+            const postType = this.value;
+            document.getElementById('eventFields').classList.add('d-none');
+            document.getElementById('petitionFields').classList.add('d-none');
+            
+            if (postType === 'event') {
+                document.getElementById('eventFields').classList.remove('d-none');
+            } else if (postType === 'petition') {
+                document.getElementById('petitionFields').classList.remove('d-none');
+            }
+        });
+
+        // Handle post submission
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Your post has been submitted!');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('newPostModal'));
+            modal.hide();
+            this.reset();
+        });
+    </script>
+</body>
+</html>

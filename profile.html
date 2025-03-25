@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | WildGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-paw me-2"></i>WildGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="map.html">Welfare Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html">Community</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="profile.html" class="btn btn-outline-light me-2" id="profileBtn">Profile</a>
+                    <button class="btn btn-light" id="loginBtn">Login</button>
+                    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <img src="images/user-avatar.png" alt="User" class="rounded-circle mb-3" width="150" height="150">
+                        <h3 id="profileName">Guest User</h3>
+                        <p class="text-muted mb-1" id="profileEmail">Not logged in</p>
+                        <p class="text-muted mb-4">Member since <span id="joinDate">-</span></p>
+                        
+                        <div class="d-grid gap-2 mb-4">
+                            <button class="btn btn-success" id="editProfileBtn">Edit Profile</button>
+                        </div>
+                        
+                        <div class="card mb-3 border-0 bg-light">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="mb-0">Reports</h6>
+                                        <p class="mb-0 text-success fw-bold" id="reportCount">0</p>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Following</h6>
+                                        <p class="mb-0 text-success fw-bold" id="followingCount">0</p>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Impact</h6>
+                                        <p class="mb-0 text-success fw-bold" id="impactScore">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="h6 mb-3">Interests</h5>
+                        <div class="d-flex flex-wrap gap-2 mb-4" id="interestTags">
+                            <span class="badge bg-success bg-opacity-10 text-success">Dogs</span>
+                            <span class="badge bg-success bg-opacity-10 text-success">Wildlife</span>
+                            <span class="badge bg-success bg-opacity-10 text-success">Conservation</span>
+                        </div>
+                        
+                        <h5 class="h6 mb-3">Badges</h5>
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            <div class="text-center">
+                                <div class="badge-icon bg-warning bg-opacity-10 text-warning rounded-circle p-3 mb-2 mx-auto">
+                                    <i class="fas fa-medal fa-2x"></i>
+                                </div>
+                                <small>Advocate</small>
+                            </div>
+                            <div class="text-center">
+                                <div class="badge-icon bg-success bg-opacity-10 text-success rounded-circle p-3 mb-2 mx-auto">
+                                    <i class="fas fa-leaf fa-2x"></i>
+                                </div>
+                                <small>Eco Hero</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="h5 mb-0">My Reports</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Animal</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTable">
+                                    <!-- Reports will be loaded here via JavaScript -->
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5">No reports yet. <a href="reports.html">Submit your first report</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="h5 mb-0">My Activity</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-4" id="activityTabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#postsTab">Posts</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#commentsTab">Comments</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#savedTab">Saved</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="activityTabsContent">
+                            <div class="tab-pane fade show active" id="postsTab">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">Rescued stray dog from construction site</h6>
+                                            <small class="text-muted">2 days ago</small>
+                                        </div>
+                                        <p class="mb-2 text-muted">Shared in Community</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Delete</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">Reported animal neglect case</h6>
+                                            <small class="text-muted">1 week ago</small>
+                                        </div>
+                                        <p class="mb-2 text-muted">Status: Under Review</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-sm btn-outline-success">Load More</button>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="commentsTab">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">On "Beach Cleanup Event"</h6>
+                                            <small class="text-muted">3 days ago</small>
+                                        </div>
+                                        <p class="mb-2">I'll be there with 3 friends! Thanks for organizing this.</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View Post</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">On "Habitat Protection Petition"</h6>
+                                            <small class="text-muted">1 week ago</small>
+                                        </div>
+                                        <p class="mb-2">Signed and shared with my network. This is so important!</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View Post</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-sm btn-outline-success">Load More</button>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="savedTab">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">How to Recognize Animal Abuse</h6>
+                                            <small class="text-muted">Saved 2 days ago</small>
+                                        </div>
+                                        <p class="mb-2 text-muted">Resource Guide</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Remove</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item border-0 px-0">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="mb-0">Volunteer Opportunities</h6>
+                                            <small class="text-muted">Saved 1 week ago</small>
+                                        </div>
+                                        <p class="mb-2 text-muted">Local Shelter Needs</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-sm btn-outline-success">Load More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="h5 mb-0">My Organizations</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="organizationsList">
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="images/org1.jpg" alt="Organization" class="rounded-circle me-3" width="50" height="50">
+                                            <h5 class="mb-0">Local Animal Shelter</h5>
+                                        </div>
+                                        <p class="text-muted">Volunteer since June 2022</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Leave</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="images/org2.jpg" alt="Organization" class="rounded-circle me-3" width="50" height="50">
+                                            <h5 class="mb-0">Wildlife Conservation</h5>
+                                        </div>
+                                        <p class="text-muted">Member since January 2023</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success">View</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Leave</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-success">Browse Organizations</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="editBio" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAvatar" class="form-label">Profile Picture</label>
+                            <input class="form-control" type="file" id="editAvatar" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Interests</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestDogs" checked>
+                                    <label class="form-check-label" for="interestDogs">Dogs</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestCats">
+                                    <label class="form-check-label" for="interestCats">Cats</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestWildlife" checked>
+                                    <label class="form-check-label" for="interestWildlife">Wildlife</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestMarine">
+                                    <label class="form-check-label" for="interestMarine">Marine Animals</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestConservation" checked>
+                                    <label class="form-check-label" for="interestConservation">Conservation</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="interestFarming">
+                                    <label class="form-check-label" for="interestFarming">Farm Animals</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
+                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center text-muted">
+                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Handle edit profile button
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+            modal.show();
+            
+            // Load current profile data into form
+            document.getElementById('editName').value = document.getElementById('profileName').textContent;
+            document.getElementById('editEmail').value = document.getElementById('profileEmail').textContent;
+        });
+
+        // Handle profile form submission
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Update profile information
+            document.getElementById('profileName').textContent = document.getElementById('editName').value;
+            document.getElementById('profileEmail').textContent = document.getElementById('editEmail').value;
+            
+            // Update interests
+            const interestsContainer = document.getElementById('interestTags');
+            interestsContainer.innerHTML = '';
+            
+            if (document.getElementById('interestDogs').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Dogs</span>';
+            }
+            if (document.getElementById('interestCats').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Cats</span>';
+            }
+            if (document.getElementById('interestWildlife').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Wildlife</span>';
+            }
+            if (document.getElementById('interestMarine').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Marine</span>';
+            }
+            if (document.getElementById('interestConservation').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Conservation</span>';
+            }
+            if (document.getElementById('interestFarming').checked) {
+                interestsContainer.innerHTML += '<span class="badge bg-success bg-opacity-10 text-success">Farm Animals</span>';
+            }
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+            modal.hide();
+            
+            alert('Profile updated successfully!');
+        });
+    </script>
+</body>
+</html>

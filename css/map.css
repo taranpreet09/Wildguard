@@ -1,0 +1,204 @@
+  
+        /* Additional Map-specific Styles */
+        #welfare-map {
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-legend {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+        }
+        
+        .map-legend h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .map-legend ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .map-legend li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .map-legend .legend-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        
+        .map-controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        .leaflet-popup-content {
+            min-width: 200px;
+        }
+        
+        .leaflet-popup-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+        
+        .leaflet-popup-content p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .leaflet-popup-content .popup-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+        
+        .leaflet-popup-content .popup-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .leaflet-popup-content .popup-actions a {
+            padding: 4px 8px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        
+        .leaflet-popup-content .popup-actions a:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Cluster markers */
+        .marker-cluster {
+            background-clip: padding-box;
+            border-radius: 20px;
+        }
+        
+        .marker-cluster div {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            margin-top: 5px;
+            text-align: center;
+            border-radius: 15px;
+            font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+        
+        .marker-cluster span {
+            line-height: 30px;
+        }
+        
+        /* Different cluster colors based on severity */
+        .marker-cluster-low {
+            background-color: rgba(181, 226, 140, 0.6);
+        }
+        
+        .marker-cluster-low div {
+            background-color: rgba(110, 204, 57, 0.6);
+        }
+        
+        .marker-cluster-medium {
+            background-color: rgba(241, 211, 87, 0.6);
+        }
+        
+        .marker-cluster-medium div {
+            background-color: rgba(240, 194, 12, 0.6);
+        }
+        
+        .marker-cluster-high {
+            background-color: rgba(253, 156, 115, 0.6);
+        }
+        
+        .marker-cluster-high div {
+            background-color: rgba(241, 128, 23, 0.6);
+        }
+        
+        .marker-cluster-emergency {
+            background-color: rgba(255, 99, 71, 0.6);
+        }
+        
+        .marker-cluster-emergency div {
+            background-color: rgba(255, 0, 0, 0.6);
+        }
+        
+        /* Custom marker icons */
+        .animal-icon {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        
+        /* Heatmap layer styles */
+        .heatmap-layer {
+            opacity: 0.7;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #welfare-map {
+                height: 400px;
+            }
+            
+            .map-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .map-legend {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            #welfare-map {
+                height: 300px;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }

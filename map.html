@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Welfare Map | WildGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <style>
+        #welfareMap { height: 600px; }
+        .map-legend {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            line-height: 1.5;
+        }
+        .legend-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-paw me-2"></i>WildGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="map.html">Welfare Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html">Community</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="profile.html" class="btn btn-outline-light me-2" id="profileBtn">Profile</a>
+                    <button class="btn btn-light" id="loginBtn">Login</button>
+                    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-fluid px-0">
+        <div class="row g-0">
+            <div class="col-md-9">
+                <div id="welfareMap"></div>
+            </div>
+            <div class="col-md-3 p-3 bg-light">
+                <h2 class="h4 mb-4">Animal Welfare Map</h2>
+                
+                <div class="mb-4">
+                    <h3 class="h6">Filters</h3>
+                    <div class="mb-3">
+                        <label for="animalFilter" class="form-label">Animal Type</label>
+                        <select class="form-select" id="animalFilter">
+                            <option value="all">All Animals</option>
+                            <option value="dog">Dogs</option>
+                            <option value="cat">Cats</option>
+                            <option value="bird">Birds</option>
+                            <option value="livestock">Livestock</option>
+                            <option value="wild">Wild Animals</option>
+                            <option value="marine">Marine Animals</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="issueFilter" class="form-label">Issue Type</label>
+                        <select class="form-select" id="issueFilter">
+                            <option value="all">All Issues</option>
+                            <option value="abuse">Abuse</option>
+                            <option value="neglect">Neglect</option>
+                            <option value="poaching">Poaching</option>
+                            <option value="habitat">Habitat Destruction</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dateFilter" class="form-label">Timeframe</label>
+                        <select class="form-select" id="dateFilter">
+                            <option value="all">All Time</option>
+                            <option value="week">Last Week</option>
+                            <option value="month">Last Month</option>
+                            <option value="year">Last Year</option>
+                        </select>
+                    </div>
+                    <button id="applyFilters" class="btn btn-success w-100">Apply Filters</button>
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="h6">Legend</h3>
+                    <div class="map-legend">
+                        <div><span class="legend-icon" style="background-color: #e41a1c;"></span> Abuse</div>
+                        <div><span class="legend-icon" style="background-color: #377eb8;"></span> Neglect</div>
+                        <div><span class="legend-icon" style="background-color: #4daf4a;"></span> Poaching</div>
+                        <div><span class="legend-icon" style="background-color: #984ea3;"></span> Habitat Destruction</div>
+                        <div><span class="legend-icon" style="background-color: #ff7f00;"></span> Other</div>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <a href="reports.html" class="btn btn-outline-success">
+                        <i class="fas fa-plus me-2"></i>Add Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
+                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center text-muted">
+                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/auth.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

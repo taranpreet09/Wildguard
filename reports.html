@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Animal Welfare Issue | WildGuard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <style>
+        #locationMap { 
+            height: 300px; 
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .photo-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .photo-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            position: relative;
+        }
+        .photo-preview-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+        }
+        #useCurrentLocation {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-paw me-2"></i>WildGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="reports.html">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="map.html">Welfare Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html">Community</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="profile.html" class="btn btn-outline-light me-2 d-none" id="profileBtn">Profile</a>
+                    <button class="btn btn-light" id="loginBtn">Login</button>
+                    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-5">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="h5 mb-0">Submit New Report</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="reportForm">
+                            <div class="mb-3">
+                                <label for="reportType" class="form-label">Type of Issue <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reportType" required>
+                                    <option value="" selected disabled>Select issue type</option>
+                                    <option value="abuse">Animal Abuse</option>
+                                    <option value="neglect">Neglect</option>
+                                    <option value="poaching">Poaching</option>
+                                    <option value="habitat">Habitat Destruction</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="animalType" class="form-label">Animal Type <span class="text-danger">*</span></label>
+                                <select class="form-select" id="animalType" required>
+                                    <option value="" selected disabled>Select animal type</option>
+                                    <option value="dog">Dog</option>
+                                    <option value="cat">Cat</option>
+                                    <option value="bird">Bird</option>
+                                    <option value="livestock">Livestock</option>
+                                    <option value="wild">Wild Animal</option>
+                                    <option value="marine">Marine Animal</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" id="location" placeholder="Address or coordinates" required>
+                                    <button class="btn btn-outline-success" type="button" id="useCurrentLocation">
+                                        <i class="fas fa-location-arrow me-1"></i>Current Location
+                                    </button>
+                                </div>
+                                <small class="text-muted">You can also click on the map below to set location</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <div id="locationMap"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" rows="4" required placeholder="Please describe the situation in detail"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="photoUpload" class="form-label">Upload Photos (Optional)</label>
+                                <input type="file" class="form-control" id="photoUpload" accept="image/*" multiple>
+                                <div class="photo-preview-container" id="photoPreview"></div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="anonymous">
+                                <label class="form-check-label" for="anonymous">Submit anonymously</label>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="h5 mb-0">Recent Reports in Your Area</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="localReports">
+                            <!-- Reports will be loaded here -->
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="map.html" class="btn btn-outline-success">View All on Map</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Report Success Modal -->
+    <div class="modal fade" id="reportSuccessModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Report Submitted</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-check-circle text-success fa-5x mb-4"></i>
+                    <h4>Thank You!</h4>
+                    <p>Your report has been submitted successfully.</p>
+                    <p class="mb-0">You can track its status on the welfare map.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                    <a href="map.html" class="btn btn-outline-success">View on Map</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to WildGuard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Don't have an account? <a href="#" id="showRegister">Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirm" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="registerConfirm" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Register</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Already have an account? <a href="#" id="showLogin">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-paw me-2"></i>WildGuard</h5>
+                    <p class="text-muted">Empowering people to protect animals through technology and community action.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="reports.html" class="text-decoration-none text-muted">Report</a></li>
+                        <li><a href="map.html" class="text-decoration-none text-muted">Map</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-muted">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>contact@wildguard.org</li>
+                        <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-decoration-none text-muted me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-decoration-none text-muted"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center text-muted">
+                <small>&copy; 2023 WildGuard. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/auth.js"></script>
+    <script src="js/map.js"></script>
+
+
+
+
+<script>
+// Reports Page Controller
+const ReportsController = {
+map: null,
+marker: null,
+
+init: function() {
+    this.initMap();
+    this.setupCurrentLocation();
+    this.setupPhotoUpload();
+    this.setupFormSubmission();
+    this.loadLocalReports();
+},
+
+initMap: function() {
+    this.map = L.map('locationMap').setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(this.map);
+    
+    this.map.on('click', (e) => {
+        this.setLocation(e.latlng.lat, e.latlng.lng);
+    });
+},
+
+setupCurrentLocation: function() {
+    const btn = document.getElementById('useCurrentLocation');
+    if (!btn) return;
+    
+    btn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser');
+            return;
+        }
+        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Locating...';
+        btn.disabled = true;
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setLocation(
+                    position.coords.latitude, 
+                    position.coords.longitude,
+                    true
+                );
+                btn.innerHTML = '<i class="fas fa-check me-1"></i> Location Set';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-location-arrow me-1"></i> Current Location';
+                    btn.disabled = false;
+                }, 2000);
+            },
+            (error) => {
+                alert(`Error getting location: ${error.message}`);
+                btn.innerHTML = '<i class="fas fa-location-arrow me-1"></i> Current Location';
+                btn.disabled = false;
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    });
+},
+
+setLocation: function(lat, lng, shouldZoom = false) {
+    document.getElementById('location').value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    
+    if (this.marker) {
+        this.map.removeLayer(this.marker);
+    }
+    this.marker = L.marker([lat, lng]).addTo(this.map);
+    
+    if (shouldZoom) {
+        this.map.setView([lat, lng], 15);
+    }
+},
+
+setupPhotoUpload: function() {
+    const uploadInput = document.getElementById('photoUpload');
+    if (!uploadInput) return;
+    
+    uploadInput.addEventListener('change', (e) => {
+        const previewContainer = document.getElementById('photoPreview');
+        previewContainer.innerHTML = '';
+        
+        Array.from(e.target.files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.createElement('div');
+                preview.className = 'position-relative';
+                preview.innerHTML = `
+                    <img src="${e.target.result}" class="photo-preview">
+                    <button class="photo-preview-remove">&times;</button>
+                `;
+                previewContainer.appendChild(preview);
+                
+                preview.querySelector('.photo-preview-remove').addEventListener('click', () => {
+                    preview.remove();
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+},
+
+setupFormSubmission: function() {
+    const form = document.getElementById('reportForm');
+    if (!form) return;
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            type: document.getElementById('reportType').value,
+            animal: document.getElementById('animalType').value,
+            location: document.getElementById('location').value,
+            description: document.getElementById('description').value,
+            anonymous: document.getElementById('anonymous').checked
+        };
+        
+        if (!this.validateForm(formData)) return;
+        
+        this.saveReport(formData);
+        this.showSuccessModal();
+        this.resetForm();
+        this.loadLocalReports();
+    });
+},
+
+validateForm: function(formData) {
+    if (!formData.type || !formData.animal || !formData.location || !formData.description) {
+        alert('Please fill all required fields');
+        return false;
+    }
+    return true;
+},
+
+saveReport: function(formData) {
+    const report = {
+        id: Date.now(),
+        ...formData,
+        date: new Date().toISOString(),
+        status: 'Submitted',
+        reporter: formData.anonymous ? 'Anonymous' : (this.getCurrentUser()?.name || 'Anonymous'),
+        photos: this.getPhotoPreviews()
+    };
+    
+    if (this.getCurrentUser()) {
+        const user = this.getCurrentUser();
+        user.reports = user.reports || [];
+        user.reports.push(report);
+        localStorage.setItem('wildguard_user', JSON.stringify(user));
+    } else {
+        const reports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
+        reports.push(report);
+        localStorage.setItem('wildguard_reports', JSON.stringify(reports));
+    }
+},
+
+getPhotoPreviews: function() {
+    return Array.from(document.querySelectorAll('.photo-preview')).map(img => img.src);
+},
+
+getCurrentUser: function() {
+    return JSON.parse(localStorage.getItem('wildguard_user'));
+},
+
+showSuccessModal: function() {
+    const modal = new bootstrap.Modal(document.getElementById('reportSuccessModal'));
+    modal.show();
+},
+
+resetForm: function() {
+    document.getElementById('reportForm').reset();
+    if (this.marker) {
+        this.map.removeLayer(this.marker);
+        this.marker = null;
+    }
+    document.getElementById('photoPreview').innerHTML = '';
+},
+
+loadLocalReports: function() {
+    const container = document.getElementById('localReports');
+    if (!container) return;
+    
+    const reports = this.getAllReports()
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 3);
+    
+    container.innerHTML = reports.length ? 
+        reports.map(report => this.createReportCard(report)).join('') :
+        this.createNoReportsMessage();
+},
+
+getAllReports: function() {
+    const users = JSON.parse(localStorage.getItem('wildguard_users')) || [];
+    const userReports = users.flatMap(user => user.reports || []);
+    const anonymousReports = JSON.parse(localStorage.getItem('wildguard_reports')) || [];
+    return [...userReports, ...anonymousReports];
+},
+
+createReportCard: function(report) {
+    return `
+        <div class="col-md-6 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-${this.getTypeColor(report.type)}">
+                            ${this.capitalize(report.type)}
+                        </span>
+                        <small class="text-muted">${new Date(report.date).toLocaleDateString()}</small>
+                    </div>
+                    <h6 class="card-title">${this.capitalize(report.animal)}</h6>
+                    <p class="card-text text-muted small">${report.description.substring(0, 80)}${report.description.length > 80 ? '...' : ''}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-user me-1"></i>
+                            ${report.reporter}
+                        </small>
+                        <a href="map.html?report=${report.id}" class="btn btn-sm btn-outline-success">
+                            View on Map
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+},
+
+createNoReportsMessage: function() {
+    return `
+        <div class="col-12 text-center py-4">
+            <i class="fas fa-paw fa-3x text-muted mb-3"></i>
+            <h5>No reports yet in your area</h5>
+            <p class="text-muted">Be the first to submit a report</p>
+        </div>
+    `;
+},
+
+getTypeColor: function(type) {
+    const colors = {
+        abuse: 'danger', neglect: 'warning',
+        poaching: 'success', habitat: 'info',
+        other: 'secondary'
+    };
+    return colors[type] || 'primary';
+},
+
+capitalize: function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+};
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+ReportsController.init();
+});
+</script>
+</body>
+</html>
